@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cumhuriyet İlkokulu 4/A • Kitap Değerlendirme Sınavları</title>
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --border: #e2e8f0;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    header {
+      background: #1e3a8a;
+      color: #ffffff;
+      padding: 24px 16px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 0.9rem;
+      opacity: 0.9;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 20px auto 0;
+      padding: 0 14px;
+    }
+
+    .search-box {
+      width: 100%;
+      padding: 13px 16px;
+      font-size: 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      background: #ffffff;
+      margin-bottom: 16px;
+      outline: none;
+    }
+
+    .search-box:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .item-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .item-no {
+      background: #eff6ff;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      min-width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .item-title {
+      font-size: 0.98rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .btn {
+      background: var(--primary);
+      color: #ffffff;
+      text-decoration: none;
+      padding: 9px 15px;
+      border-radius: 9px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    .empty {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--muted);
+      background: #ffffff;
+      border-radius: 12px;
+      border: 1px dashed #cbd5e1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Cumhuriyet İlkokulu 4/A Sınıfı</h1>
+    <p>Kitap Okuma Değerlendirme Sınavları</p>
+  </header>
+
+  <main class="container">
+    <input
+      type="text"
+      id="search"
+      class="search-box"
+      placeholder="Kitap adını yazarak arayın..."
+    />
+
+    <div class="list" id="list"></div>
+  </main>
+
+  <script>
+    const rawBooks = [
+      { title: "Uçan Balon Peşinde", url: "https://forms.gle/LjxrPmWiRXJfXdJv7" },
+      { title: "Havadan Gelen Mektup", url: "https://forms.gle/5xcGVbexRfjqhHuo6" },
+      { title: "Gökyüzü Buluşması", url: "https://forms.gle/BE4k1G46rcn8btqr8" },
+      { title: "Kaplumbağa Macerası", url: "https://forms.gle/M7k7HTcQDYkvg69t8" },
+      { title: "Patik'in Macerası", url: "https://forms.gle/HyFrUPZdrSLBc5zv6" },
+      { title: "Denizin Ortasında Bir Macera", url: "https://forms.gle/m9KH4hvwxAu2ptMk8" },
+      { title: "Manolya Kurtarma Operasyonu", url: "https://forms.gle/CZt84j7dEtBqLoWQA" },
+      { title: "Kütüphanede Bir Gece", url: "https://forms.gle/y5iNYR7mHGNBSNFu8" },
+      { title: "Göktaşının Peşinde", url: "https://forms.gle/jb14JSGBTV5zJmSz6" },
+      { title: "Göç Edemeyen Leylek", url: "https://forms.gle/VDMAoLwxiGdnPTf68" },
+      { title: "Kumsaldaki Adam", url: "https://forms.gle/zmHQeNgihUAfAF9cA" },
+      { title: "Dönen Küreler", url: "https://forms.gle/HeBNUvNnSyy7oRAT6" },
+      { title: "Besin Tanıma Robotu", url: "https://forms.gle/PSkHyeSyyyyRz5zx8" },
+      { title: "Beş Duyu", url: "https://forms.gle/WsRcyaBYxjPNZFjFA" },
+      { title: "Kuvvetli Gemi", url: "https://forms.gle/xA65AfASVFWYNf1H9" },
+      { title: "Maddenin Halleri", url: "https://forms.gle/Bq9mV6PkHxg1aXPK8" },
+      { title: "Gece Aydın", url: "https://forms.gle/7ruRktzpLf4mu7Un6" },
+      { title: "Ses ve Ötesi", url: "https://forms.gle/j5vqCQ4moDNwj15G7" },
+      { title: "Çevre Temizliği", url: "https://forms.gle/AAdcpxcmrsdZxLse8" },
+      { title: "Her Yerde Elektrik", url: "https://forms.gle/9Ncwce9fqnV9SNhMA" },
+      { title: "Zaman Gezginleri", url: "https://forms.gle/GiLwwX9M5AEbSN7NA" },
+      { title: "Gerçeği Ararken", url: "https://forms.gle/X54db4kHkqGXpgRo7" },
+      { title: "Sırlar Mağarası", url: "https://forms.gle/2Hsatdw4s6KM4s2K8" },
+      { title: "Gizemli Bir Çocuk", url: "https://forms.gle/n5YHcYn6LsBb7J6h9" },
+      { title: "Kasabadaki Hazine", url: "https://forms.gle/ZMMnTsAa6AkX6A209" },
+      { title: "Madalyonun Peşinde", url: "https://forms.gle/BwgPcnjAw1wTuWRXA" },
+      { title: "Kayıp Çocuklar", url: "https://forms.gle/kL6YG1H81MweqjJn6" },
+      { title: "Bilim Kampında Macera", url: "https://forms.gle/TCPnhRvL5Jq81mb17" },
+      { title: "Fosiller Bize Ne Anlatıyor?", url: "https://forms.gle/Fzkym1DnTe3Wrcjt7" },
+      { title: "Kutup Ayıları Üşür Mü?", url: "https://forms.gle/vjyTjy17tQrWvP8x6" },
+      { title: "Mercanları Kim Boyadı?", url: "https://forms.gle/noJ7cnj5v1oD2miV6" },
+      { title: "Ayça'yı Yere Kim Çekti?", url: "https://forms.gle/Qq4UV1SmGwsSCHHs8" },
+      { title: "Çöldeki kuyuları kim kazdı?", url: "https://forms.gle/BDR33WbUi1cPeUde7" },
+      { title: "Mars Neden Kırmızı?", url: "https://forms.gle/2Dp8owT58qKBhLGHA" },
+      { title: "Beynimin içinde ne var?", url: "https://forms.gle/i5JA9FuduHvTSU5c9" },
+      { title: "Kim korkar şimşekten?", url: "https://forms.gle/wGfXxMTKrqThPNzH9" },
+      { title: "Işık çok mu hızlı?", url: "https://forms.gle/2HGbGJjAmCK6EbUy7" },
+      { title: "Balonlar nasıl uçar?", url: "https://forms.gle/87rQ5LKFAJBHkvyU6" },
+      { title: "Sesimi Duyuyor musun?", url: "https://forms.gle/EfiuqghiZhoWnosx6" },
+      { title: "Dev bebek mi?", url: "https://forms.gle/RMcN5qFqLJPyPUGdA" },
+      { title: "Mikroplar nerede bulunmaz?", url: "https://forms.gle/Wrt5W474TN3Zw2Mx6" },
+      { title: "Dinozorlar nasıl yok oldu?", url: "https://forms.gle/LrL1qAdWn2zWf9kj9" },
+      { title: "Kuyruklu yıldız nerede?", url: "https://forms.gle/eUfiAW2hi1cdZm28A" },
+      { title: "Denizanası patlar mı?", url: "https://forms.gle/429WUEEjVQSHSy6Y6" },
+      { title: "Gölün Üzerini Kim Örttü?", url: "https://forms.gle/12ed2JSF8kTjQjzeA" },
+      { title: "Robot arılar ne iş yapar?", url: "https://forms.gle/HHj4puVNvFuVTvzj6" },
+      { title: "Ay'daki krakerleri kim yedi?", url: "https://forms.gle/UogeTmQhGNFZmdn59" },
+      { title: "Karlar beyaz değil mi?", url: "https://forms.gle/kTZVkwjZCDgqGrux6" }
+    ];
+
+    const books = rawBooks
+      .slice()
+      .sort((a, b) => a.title.localeCompare(b.title, "tr"))
+      .map((book, index) => ({
+        no: index + 1,
+        title: book.title,
+        url: book.url
+      }));
+
+    let query = "";
+
+    function normalize(str) {
+      return str
+        .toLocaleLowerCase("tr-TR")
+        .replace(/ı/g, "i")
+        .replace(/ğ/g, "g")
+        .replace(/ü/g, "u")
+        .replace(/ş/g, "s")
+        .replace(/ö/g, "o")
+        .replace(/ç/g, "c");
+    }
+
+    function render() {
+      const list = document.getElementById("list");
+      const q = normalize(query.trim());
+
+      const filtered = books.filter((b) => {
+        return !q || normalize(b.title).includes(q) || String(b.no) === q;
+      });
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="empty">Aradığınız kitap bulunamadı.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered
+        .map(
+          (b) => `
+          <div class="item">
+            <div class="item-info">
+              <span class="item-no">${b.no}</span>
+              <span class="item-title">${b.title}</span>
+            </div>
+            <a class="btn" href="${b.url}" target="_blank" rel="noopener noreferrer">Sınava Git</a>
+          </div>
+        `
+        )
+        .join("");
+    }
+
+    document.getElementById("search").addEventListener("input", (e) => {
+      query = e.target.value;
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
